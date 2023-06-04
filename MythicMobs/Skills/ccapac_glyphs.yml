@@ -1,0 +1,42 @@
+ccapac_condor_drop_to_one:
+    Cooldown: 60
+    Skills:
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Your death will be fuel for my reign.";chatprefix=<caster.name>&f<&co>;duration=200} @self
+    - disguise{d="ApuPink"} @self
+    - skill:ccapac_swap_back_skins @self
+    - delay 60
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Glyph of the Condor!";chatprefix=<caster.name>&f<&co>;duration=200} @self
+    - effect:explosion @self
+    - damagepercent{percent=0.999; ch=true; ia=true; pk=true; pi=true} @PIR{r=30}
+    - stun{d=100;f=true; stopai=true; noknockback=true} @self
+
+ccapac_hummingbird_aoe_dmg:
+    Cooldown: 30
+    Skills:
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Your party is weak and frail. Glyph of the Hummingbird!";chatprefix=<caster.name>&f<&co>;duration=200} @self
+    - disguise{d="ApuOrange"} @self
+    - skill:ccapac_swap_back_skins @self
+    - effect:explosion @self
+    - damage{amount=20; pk=true} @PIR{r=30}
+
+ccapac_whale_slow:
+    Cooldown: 30
+    Skills:
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="You're too weak to even move! Glyph of the Whale!";chatprefix=<caster.name>&f<&co>;duration=200} @self
+    - disguise{d="ApuPurple"} @self
+    - skill:ccapac_swap_back_skins @self
+    - effect:explosion @self
+    - potion{type=SLOW;duration=200;level=4}
+
+ccapac_monkey_negate:
+    Skills:
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Glyph of the Monkey! Suffer the pain you've inflicted!";chatprefix=<caster.name>&f<&co>;duration=200} @self
+    - disguise{d="ApuYellow"} @self
+    - skill:ccapac_swap_back_skins @self
+    - damagepercent{percent=0.5; ch=true; ia=true; pk=true; pi=true} @PIR{r=30}
+    - CancelEvent
+
+ccapac_swap_back_skins:
+    Skills:
+    - delay 200
+    - disguise{d="ApuBlie"} @self

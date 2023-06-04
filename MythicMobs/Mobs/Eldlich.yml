@@ -3,6 +3,7 @@ eldlich_the_golden_lord:
     Display: Eldlich, the Golden Lord
     Health: 200
     Damage: 15
+    Disguise: eldlich_the_golden_lord
     BossBar:
         Enabled: true
         Title: Eldlich, the Golden Lord
@@ -15,6 +16,8 @@ eldlich_the_golden_lord:
     Faction: boss_eldlich
     Drops:
     - leather_chestplate{name="Golden Leather";lore="&8An enchanted vest made of golden leather";color=YELLOW} 1 1
+    Modules:
+        ThreatTable: true
     Options:
         MovementSpeed: 0.3
         Despawn: PERSISTENT
@@ -28,8 +31,12 @@ eldlich_the_golden_lord:
         ReviveHealth: -1
         Silent: true
     Skills:
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Behold! The power of the Golden Land!";chatprefix=<caster.name>&f<&co>;duration=200} @self ~onDamaged =99%
     - setvariable{var=caster.currentsacrifice;value="conquistador";type=STRING} @self ~onSpawn #internal thing dw
     - skill:eldlich_prevent_death_base @self ~onDamaged  #contains all the logic for the phases and death prevention
+
+    #anticheese
+    - setvariable{var=caster.anticheesedialogue;value="Come Here!";type=STRING}
     - skill:anticheese @PlayersInRadius{r=60} ~onTimer:200
     #spawn adds
     - summon{type=conquistador_of_the_golden_land;amount=1;radius=5} @self ~onSpawn
@@ -38,3 +45,6 @@ eldlich_the_golden_lord:
 
     #clear adds on death
     - remove{delay=3} @MobsInRadius{r=300;t=guardian_of_the_golden_land,huaquero_of_the_golden_land,conquistador_of_the_golden_land} ~onDeath
+
+    #death dialogue
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Impossible... I was promised... infinite power...";chatprefix=<caster.name>&f<&co>;duration=200} @self ~onDeath

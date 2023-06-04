@@ -29,7 +29,6 @@ eldlich_prevent_death_conquistador:
     - hasAI true
     - mythicmobtype{t=conquistador_of_the_golden_land} true
   Skills:
-  - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="<target.name>";chatprefix=<caster.name>&f<&co>;duration=200} @self
   - effect:particlering{particle=glow;radius=5;points=32;amount=1;hS=1;vS=0} @self
   - healpercent{m=1} @self
   # effect:glow{color=GOLD;duration=60}
