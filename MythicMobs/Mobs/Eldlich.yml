@@ -30,7 +30,7 @@ eldlich_the_golden_lord:
     Skills:
     - setvariable{var=caster.currentsacrifice;value="conquistador";type=STRING} @self ~onSpawn #internal thing dw
     - skill:eldlich_prevent_death_base @self ~onDamaged  #contains all the logic for the phases and death prevention
-    - skill:anticheese @self #teleport players to him on a timer, currently broken, WHY
+    - skill:anticheese @PlayersInRadius{r=60} ~onTimer:200
     #spawn adds
     - summon{type=conquistador_of_the_golden_land;amount=1;radius=5} @self ~onSpawn
     - summon{type=huaquero_of_the_golden_land;amount=1;radius=5} @self ~onSpawn

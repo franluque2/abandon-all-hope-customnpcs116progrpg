@@ -1,5 +1,7 @@
 anticheese:
-  Cooldown: 30
+  Conditions:
+  - targetwithin{d=60} true
+  - TargetNotWithin{d=8} true
   Skills:
-  - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Come here!.";chatprefix=<caster.name>&f<&co>;duration=200} @self
-  - forcepull @EntitiesInRadius{spread=1;r=30}
+  - speak{offset=0.6f;radius=60;maxlinelength=22;lineprefix="&5";message="Come here!.";chatprefix=<caster.name>&f<&co>;duration=200} @self
+  - forcepull{spread=1} @target
