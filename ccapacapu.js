@@ -1,7 +1,7 @@
 var ccapacvariables={
 
     //Dialogue on Starting fight
-    startfdiag:"start fight",
+    startfdiag:"You've yet to even reach the eye of the storm.",
 
     //base texture url
     basetextureurl:"https://i.imgur.com/ppz7S0p.png",
@@ -24,54 +24,54 @@ var ccapacvariables={
 
 
     //MARK OF THE CONDOR (HP TO 1)
-    diagcondorwindup:"wind up condor",
-    diagcondordamage:"condor set to 1",
+    diagcondorwindup:"Your death will be fuel for my reign.",
+    diagcondordamage:"Glyph of the Condor!",
 
     windupcondordelay:2,
     followthroughcondordelay:2,
     condorcd:20,
     condormajorcd:60,
     condorchance:0.4,
-    condorradius:50,
-    condorsoundeff:"entity.generic.explode",
-    condorparticle:"explosion_emitter",
+    condorradius:64,
+    condorsoundeff:"entity.elder_guardian.curse",
+    condorparticle:"obsidian_tear_particle",
 
 
     //MARK OF THE HUMMINGBIRD (DMG)
-    diaghummingbird:"hummingbird dmg",
+    diaghummingbird:"Your party is weak and frail. Glyph of the Hummingbird!",
     hummingbirdcd:20,
     hummingbirdmajorcd:60,
     hummingbirdchance:0.4,
-    hummingbirdradius:50,
-    hummingbirdsoundeff:"entity.generic.explode",
-    hummingbirdparticle:"explosion_emitter",
-    hummingbirddmg:500,
+    hummingbirdradius:64,
+    hummingbirdsoundeff:"entity.dragon_fireball.explode",
+    hummingbirdparticle:"huge_explosion_emitter",
+    hummingbirddmg:600,
 
 
     //MARK OF THE WHALE (SLOW)
-    diagwhale:"whale slow",
+    diagwhale:"You're too weak to even move! Glyph of the Whale!",
     whalecd:20,
     whalemajorcd:60,
     whalechance:0.4,
-    whaleradius:50,
-    whalesoundeff:"entity.generic.explode",
-    whaleparticle:"explosion_emitter",
+    whaleradius:64,
+    whalesoundeff:"block.beacon.activate",
+    whaleparticle:"create:soul",
     whaleslowstr:20,
     whalelowduration:6,
 
 
 
     //MARK OF THE MONKEY (NEGATE DMG AND SET HEALTH TO PERCENTILE)
-    diagmonkey:"monkey negate and set hp",
-    monkeythresholds:[0.8,0.6,0.4,0.2],
-    monkeyradius:50,
-    monkeysoundeff:"entity.generic.explode",
-    monkeyparticle:"explosion_emitter",
+    diagmonkey:"Glyph of the Monkey! Suffer the pain you've inflicted!",
+    monkeythresholds:[0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1],
+    monkeyradius:64,
+    monkeysoundeff:"entity.blaze.death",
+    monkeyparticle:"minecraft:large_smoke",
     monkeypercentile:0.5,
 
     //teleport everyone in range to boss
-    diagteleport:"teleporting everyone to me",
-    teleportrange:50,
+    diagteleport:"You thought you were safe, casters?",
+    teleportrange:64,
     teleportcd:10,
     teleportsoundeff:"minecraft:entity.ender_eye.death",
     teleportparticle:"portal",
@@ -79,7 +79,7 @@ var ccapacvariables={
 
 
     //dialogue on death
-    deathdiag:"death diag",
+    deathdiag:"You've... done... nothing...!",
 
 }
 
