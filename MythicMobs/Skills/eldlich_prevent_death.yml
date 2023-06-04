@@ -32,7 +32,7 @@ eldlich_prevent_death_conquistador:
   - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="<target.name>";chatprefix=<caster.name>&f<&co>;duration=200} @self
   - effect:particlering{particle=glow;radius=5;points=32;amount=1;hS=1;vS=0} @self
   - healpercent{m=1} @self
-  - effect:glow{color=GOLD;duration=60}
+  # effect:glow{color=GOLD;duration=60}
   - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Conquistador... I'll transmute you into my power, relish in becoming part of a divine king.";chatprefix=<caster.name>&f<&co>;duration=200} @self
   - stun{d=6000000;f=true; stopai=true; noknockback=true}
   - setAI{ai=false}
@@ -47,7 +47,7 @@ eldlich_prevent_death_huaquero:
   Skills:
   - effect:particlering{particle=glow;radius=5;points=32;amount=1;hS=1;vS=0} @self
   - healpercent{m=1} @self
-  - effect:glow{color=GOLD;duration=60}
+  # effect:glow{color=GOLD;duration=60}
   - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="You finally meet your end by having your energy stolen, Huaquero, how ironic.";chatprefix=<caster.name>&f<&co>;duration=200} @self
   - stun{d=6000000;f=true; stopai=true; noknockback=true}
   - setAI{ai=false}
@@ -61,7 +61,7 @@ eldlich_prevent_death_guardian:
   Skills:
   - effect:particlering{particle=glow;radius=5;points=32;amount=1;hS=1;vS=0} @self
   - healpercent{m=1} @self
-  - effect:glow{color=GOLD;duration=60}
+  # effect:glow{color=GOLD;duration=60}
   - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Fulfill your role as guardian and become my energy!";chatprefix=<caster.name>&f<&co>;duration=200} @self
   - stun{d=6000000;f=true; stopai=true; noknockback=true}
   - setAI{ai=false}
