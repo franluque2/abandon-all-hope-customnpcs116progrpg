@@ -1,0 +1,75 @@
+eldlich_prevent_death_base:
+  Conditions:
+  - health{h=<50} true
+  Skills:
+  - switch{condition=variableEquals{var=caster.currentsacrifice;value=<case>}; cases=
+    case conquistador=[
+      - setvariable{var=caster.currentsacrifice;value="huaquero";type=STRING} @self
+      - skill:eldlich_prevent_death_conquistador @EIR{r=30;t=conquistador_of_the_golden_land}
+      - CancelEvent
+    ]
+    case huaquero=[
+      - setvariable{var=caster.currentsacrifice;value="guardian";type=STRING} @self
+      - skill:eldlich_prevent_death_huaquero @EIR{r=30;t=huaquero_of_the_golden_land}
+      - CancelEvent
+    ]
+    case guardian=[
+      - setvariable{var=caster.currentsacrifice;value="over";type=STRING} @self
+      - skill:eldlich_prevent_death_guardian @EIR{r=30;t=guardian_of_the_golden_land}
+      - CancelEvent
+    ]
+    case over=[
+      - remove{delay=30} @MobsInRadius{r=30;t=guardian_of_the_golden_land,huaquero_of_the_golden_land,conquistador_of_the_golden_land}
+    ]
+    case DEFAULT=[    
+    ]}
+
+
+eldlich_prevent_death_conquistador:
+  TargetConditions:
+    - hasAI true
+  Skills:
+  - effect:particlering{particle=glow;radius=5;points=32;amount=1;hS=1;vS=0} @self
+  - healpercent{m=1} @self
+  #- effect:glow{color=GOLD;duration=60}
+  - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Conquistador... I'll transmute you into my power, relish in becoming part of a divine king.";chatprefix=<caster.name>&f<&co>;duration=200} @self
+  - stun{d=6000000;f=true; stopai=true; noknockback=true} @target
+  - setAI{ai=false} @target
+  - effect:particlering{particle=glow;radius=2;points=32;amount=1;hS=1;vS=0} @target
+
+
+
+eldlich_prevent_death_huaquero:
+  TargetConditions:
+    - hasAI true
+    - mythicmobtype{t=huaquero_of_the_golden_land}
+  Skills:
+  - effect:particlering{particle=glow;radius=5;points=32;amount=1;hS=1;vS=0} @self
+  - healpercent{m=1} @self
+  #- effect:glow{color=GOLD;duration=60}
+  - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="You finally meet your end by having your energy stolen, Huaquero, how ironic.";chatprefix=<caster.name>&f<&co>;duration=200} @self
+  - stun{d=6000000;f=true; stopai=true; noknockback=true} @target
+  - setAI{ai=false} @target
+  - effect:particlering{particle=glow;radius=2;points=32;amount=1;hS=1;vS=0} @target
+
+
+eldlich_prevent_death_guardian:
+  TargetConditions:
+    - hasAI true
+    - mythicmobtype{t=guardian_of_the_golden_land}
+  Skills:
+  - effect:particlering{particle=glow;radius=5;points=32;amount=1;hS=1;vS=0} @self
+  - healpercent{m=1} @self
+  #- effect:glow{color=GOLD;duration=60}
+  - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Fulfill your role as guardian and become my energy!";chatprefix=<caster.name>&f<&co>;duration=200} @self
+  - stun{d=6000000;f=true; stopai=true; noknockback=true} @target
+  - setAI{ai=false} @target
+  - effect:particlering{particle=glow;radius=2;points=32;amount=1;hS=1;vS=0} @target
+  - skill:eldlich_nuke_everyone @PIR{r=30}
+
+
+eldlich_nuke_everyone:
+  CancelIfNoTargets: true
+  Skills:
+  - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="They may all be gone... but I can still transmute you!";chatprefix=<caster.name>&f<&co>;duration=200} @self
+  - damagepercent{percent=0.99; ch=true; ia=true; pk=true; pi=true} @target

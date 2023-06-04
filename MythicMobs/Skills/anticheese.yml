@@ -1,0 +1,5 @@
+anticheese:
+  Cooldown: 30
+  Skills:
+  - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="Come here!.";chatprefix=<caster.name>&f<&co>;duration=200} @self
+  - forcepull @EntitiesInRadius{spread=1;r=30}

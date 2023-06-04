@@ -1,0 +1,40 @@
+eldlich_the_golden_lord:
+    Type: zombie
+    Display: Eldlich, the Golden Lord
+    Health: 200
+    Damage: 15
+    BossBar:
+        Enabled: true
+        Title: Eldlich, the Golden Lord
+        Range: 20
+        Color: YELLOW
+        Style: SEGMENTED_6
+        CreateFog: false
+        DarkenSky: false
+        PlayMusic: false
+    Faction: boss_eldlich
+    Drops:
+    - leather_chestplate{name="Golden Leather";lore="&8An enchanted vest made of golden leather";color=YELLOW} 1 1
+    Options:
+        MovementSpeed: 0.3
+        Despawn: PERSISTENT
+        AlwaysShowName: true
+        KnockbackResistance: 0.5
+        PreventOtherDrops: true
+        PreventRandomEquipment: true
+        PreventMobKillDrops: true
+        PreventRenaming: true
+        PreventSunburn: true
+        ReviveHealth: -1
+        Silent: true
+    Skills:
+    - setvariable{var=caster.currentsacrifice;value="conquistador";type=STRING} @self ~onSpawn #internal thing dw
+    - skill:eldlich_prevent_death_base @self ~onDamaged  #contains all the logic for the phases and death prevention
+    - skill:anticheese @self #teleport players to him on a timer, currently broken, WHY
+    #spawn adds
+    - summon{type=conquistador_of_the_golden_land;amount=1;radius=5} @self ~onSpawn
+    - summon{type=huaquero_of_the_golden_land;amount=1;radius=5} @self ~onSpawn
+    - summon{type=guardian_of_the_golden_land;amount=1;radius=5} @self ~onSpawn
+
+    #clear adds on death
+    - remove{delay=3} @MobsInRadius{r=300;t=guardian_of_the_golden_land,huaquero_of_the_golden_land,conquistador_of_the_golden_land} ~onDeath

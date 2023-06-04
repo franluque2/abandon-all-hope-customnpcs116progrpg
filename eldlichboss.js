@@ -45,6 +45,10 @@ var variables_eldlich = {
             YCOORDMOV: 160,
             //z coordinate
             ZCOORDMOV: -151.818,
+
+            //melee atk stat change on death (additive to base)
+            CHANGETOATKDMG:50,
+            CHANGETOATKSPEED:10
         },
         {
             //guy to spawn, must be the EXACT name of the npc to spawn in the mob cloning tool
@@ -73,6 +77,10 @@ var variables_eldlich = {
             YCOORDMOV: 160,
             //z coordinate
             ZCOORDMOV: -140.388,
+
+            //melee atk stat change on death (additive to base)
+            CHANGETOATKDMG:50,
+            CHANGETOATKSPEED:10
         },
         {
             //guy to spawn, must be the EXACT name of the npc to spawn in the mob cloning tool
@@ -100,6 +108,10 @@ var variables_eldlich = {
             YCOORDMOV: 160,
             //z coordinate
             ZCOORDMOV: -162.493,
+
+            //melee atk stat change on death (additive to base)
+            CHANGETOATKDMG:50,
+            CHANGETOATKSPEED:10
         }
     ],
 
@@ -107,12 +119,45 @@ var variables_eldlich = {
     //will only spawn enemies if there are players in this radius
     RADIUS_PCHECK: 30,
 
-    HITRADIUS:64
+    HITRADIUS:64,
+
+    //teleport everyone in range to boss
+    diagteleport:"You thought you were safe, casters?",
+    teleportrange:64,
+    teleportcd:10,
+    teleportsoundeff:"minecraft:entity.ender_eye.death",
+    teleportparticle:"portal",
+    teleportchance:0.8,
+
+    //base stats to reset npc
+    basemeleeatkstr:500,
+    basemeleeatkspeed:60,
+
+    //base music to reset npc
+    basemusic: " ",
+
+    //bard to change music, must be the EXACT name of the npc to spawn in the mob cloning tool
+    bardname: "bard person",
+
+
+    //final phase music
+    finalphasemusic:" ",
+   
+
+
+
 }
 
 var fighting = false
 var deadmooks=["Eldlich the Golden Lord"]
 var validnames=[""]
+
+var eldconstants=
+{
+
+    TELEPORT_TO_BOSS:1,
+
+}
 
 /**
  * @param {NpcEvent.InitEvent} event
@@ -133,9 +178,34 @@ function init(event) {
             
         });
         
+        if (event.npc.getTimers().has(eldconstants.TELEPORT_TO_BOSS)) {
+            event.npc.getTimers().stop(eldconstants.TELEPORT_TO_BOSS);
+        }
+    changemusic(event.npc, variables_eldlich.basemusic)
+    event.npc.getStats().getMelee().setStrength(variables_eldlich.basemeleeatkstr)
+    event.npc.getStats().getMelee().setDelay(variables_eldlich.basemeleeatkspeed)
+
 
     
+}
 
+/**
+ * @param {ICustomNpc} e
+ * @param {string} str
+ */
+function changemusic(e, str)
+{
+    var nearbymooks=e.getWorld().getNearbyEntities(e.getPos(),50, 2)
+    if(nearbymooks.length!=0)
+    {
+        for (var i = 0; i < nearbymooks.length; i++) {
+            if (nearbymooks[i].getName() == variables_eldlich.bardname)
+            {
+                nearbymooks[i].getJob().setSong(str)
+            }}
+
+        
+    }
 }
 
 /**
@@ -150,6 +220,12 @@ function damaged(event) {
             if (variables_eldlich.STARF_DIAG != "") {
                 event.npc.say(variables_eldlich.STARF_DIAG)
             }
+        
+        if (event.npc.getTimers().has(eldconstants.TELEPORT_TO_BOSS)) {
+            event.npc.getTimers().stop(eldconstants.TELEPORT_TO_BOSS);
+        }
+        event.npc.getTimers().start(eldconstants.TELEPORT_TO_BOSS,variables_eldlich.teleportcd*20,true)
+
 
         nearbymooks=event.npc.getWorld().getNearbyEntities(event.npc.getPos(),50, 2)
         if(nearbymooks.length!=0)
@@ -179,6 +255,7 @@ function damaged(event) {
     event.npc.say(event.damage)*/
     if (curh-Math.ceil(event.damage)<=10)
     {
+        //event.npc.say("HERE")
         nearbymooks=event.npc.getWorld().getNearbyEntities(event.npc.getPos(),50, 2)
 
         if(nearbymooks.length!=0)
@@ -189,6 +266,8 @@ function damaged(event) {
                     deadmooks.push(nearbymooks[i].getName())
                     nearbymooks[i].getAi().setMovingType(0)
                     nearbymooks[i].getAi().setRetaliateType(3)
+                    nearbymooks[i].getAi().setWalkingSpeed(0)
+
                     
                     nearbymooks[i].getDisplay().setTint(0xFFFF00)
                     nearbymooks[i].getDisplay().setHasLivingAnimation(false)
@@ -203,6 +282,9 @@ function damaged(event) {
                     if (mook.MOOKNAME==nearbymooks[i].getName())
                     {
                         event.npc.say(mook.SACDIAG)
+
+                        event.npc.getStats().getMelee().setStrength(event.npc.getStats().getMelee().getStrength()+mook.CHANGETOATKDMG)
+                        event.npc.getStats().getMelee().setDelay(event.npc.getStats().getMelee().getDelay()+mook.CHANGETOATKSPEED)
                     }
                     })
 
@@ -211,6 +293,8 @@ function damaged(event) {
                         if (variables_eldlich.ALLMOOKSDEADDIAG != "") {
                             event.npc.say(variables_eldlich.ALLMOOKSDEADDIAG)
                         }
+
+                        changemusic(event.npc, variables_eldlich.finalphasemusic)
 
                         event.npc.getWorld().spawnParticle("explosion_emitter",event.npc.getBlockX()+0.5,event.npc.getBlockY(),event.npc.getBlockZ()+0.5,0.25,1,0.25,0.5,100);
                         event.npc.getWorld().playSoundAt(event.npc.getPos(),"entity.generic.explode",10,1)
@@ -246,9 +330,87 @@ function damaged(event) {
             if (variables_eldlich.DEATHDIAG != "") {
                 event.npc.say(variables_eldlich.DEATHDIAG)
             }
+            changemusic(event.npc, variables_eldlich.basemusic)
+
 
         }
         
     }
     
+}
+
+
+/**
+ * @param {NpcEvent.TimerEvent} e
+ */
+function timer(e)
+{
+    if(e.id==eldconstants.TELEPORT_TO_BOSS)
+    {
+        if(Math.random()<=variables_eldlich.teleportchance)
+        {
+            if(variables_eldlich.diagteleport!="")
+            {
+                e.npc.say(variables_eldlich.diagteleport)
+            }
+
+
+            var hit=e.npc.getWorld().getNearbyEntities(e.npc.getPos(), variables_eldlich.teleportrange, 1)
+        
+            if (hit.length!=0){
+                for (var i = 0; i < hit.length; i++) {
+                    e.npc.getWorld().spawnParticle(variables_eldlich.teleportparticle,hit[i].getBlockX()+0.5,hit[i].getBlockY(),hit[i].getBlockZ()+0.5,0.25,1,0.25,0.5,100);
+                    e.npc.getWorld().playSoundAt(hit[i].getPos(),variables_eldlich.teleportsoundeff,10,1)
+        
+                    hit[i].setPos(e.npc.getPos());
+                }
+
+            }
+
+            e.npc.getWorld().spawnParticle(variables_eldlich.teleportparticle,e.npc.getBlockX()+0.5,e.npc.getBlockY(),e.npc.getBlockZ()+0.5,0.25,1,0.25,0.5,100);
+            e.npc.getWorld().playSoundAt(e.npc.getPos(),variables_eldlich.teleportsoundeff,10,1)
+
+            var nearbymooks=e.npc.getWorld().getNearbyEntities(e.npc.getPos(),50, 2)
+            if(nearbymooks.length!=0)
+            {
+                for (var i = 0; i < nearbymooks.length; i++) {
+                    if (validnames.indexOf(nearbymooks[i].getName()) >= 0)
+                    {
+                        variables_eldlich.MOOKS.slice()
+                        .forEach(function(mook) {
+                        
+                        if (mook.MOOKNAME==nearbymooks[i].getName())
+                        {
+                            nearbymooks[i].setPosition(e.npc.getBlockX()+0.5,e.npc.getBlockY(),e.npc.getBlockZ()+0.5)
+                        }
+                        })
+                    }}
+
+                
+            }
+
+
+        }
+    }
+
+
+
+}
+
+/**
+ * @param {NpcEvent.DiedEvent} e
+ */
+
+function died(e)
+{
+    fighting = false
+    deadmooks=[e.npc.getName()]
+    validnames=[""]        
+    if (e.npc.getTimers().has(eldconstants.TELEPORT_TO_BOSS)) {
+        e.npc.getTimers().stop(eldconstants.TELEPORT_TO_BOSS);
+    }
+    changemusic(e.npc, variables_eldlich.basemusic)
+
+    e.npc.getStats().getMelee().setStrength(variables_eldlich.basemeleeatkstr)
+    e.npc.getStats().getMelee().setDelay(variables_eldlich.basemeleeatkspeed)
 }

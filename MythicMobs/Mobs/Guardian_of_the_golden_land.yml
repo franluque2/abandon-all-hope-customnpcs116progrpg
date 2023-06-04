@@ -1,0 +1,22 @@
+guardian_of_the_golden_land:
+    Type: wolf
+    Display: Guardian of the Golden Land
+    Health: 500
+    Damage: 10
+    Faction: boss_eldlich
+    Options:
+        MovementSpeed: 0.3
+        Despawn: PERSISTENT
+        AlwaysShowName: false
+        KnockbackResistance: 0.5
+        PreventOtherDrops: true
+        PreventRandomEquipment: true
+        PreventMobKillDrops: true
+        PreventRenaming: true
+        PreventSunburn: true
+        ReviveHealth: -1
+        Invincible: true
+        Silent: true
+    AITargetSelectors:
+        - clear
+        - players

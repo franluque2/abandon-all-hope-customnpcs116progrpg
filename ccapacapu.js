@@ -21,6 +21,10 @@ var ccapacvariables={
     //whale texture
     whaletextureurl:"https://i.imgur.com/0n4GNQz.png",
 
+    //coords of the redstone block to place whenever a glyph is used
+    coords:[-122, 95, -487],
+
+
 
 
     //MARK OF THE CONDOR (HP TO 1)
@@ -34,28 +38,28 @@ var ccapacvariables={
     condorchance:0.4,
     condorradius:64,
     condorsoundeff:"entity.elder_guardian.curse",
-    condorparticle:"obsidian_tear_particle",
+    condorparticle:"falling_obsidian_tear",
 
 
     //MARK OF THE HUMMINGBIRD (DMG)
     diaghummingbird:"Your party is weak and frail. Glyph of the Hummingbird!",
     hummingbirdcd:20,
-    hummingbirdmajorcd:60,
-    hummingbirdchance:0.4,
+    hummingbirdmajorcd:40,
+    hummingbirdchance:0.6,
     hummingbirdradius:64,
     hummingbirdsoundeff:"entity.dragon_fireball.explode",
-    hummingbirdparticle:"huge_explosion_emitter",
+    hummingbirdparticle:"explosion_emitter",
     hummingbirddmg:600,
 
 
     //MARK OF THE WHALE (SLOW)
     diagwhale:"You're too weak to even move! Glyph of the Whale!",
-    whalecd:20,
-    whalemajorcd:60,
-    whalechance:0.4,
+    whalecd:10,
+    whalemajorcd:40,
+    whalechance:0.6,
     whaleradius:64,
     whalesoundeff:"block.beacon.activate",
-    whaleparticle:"create:soul",
+    whaleparticle:"poof",
     whaleslowstr:20,
     whalelowduration:6,
 
@@ -96,12 +100,16 @@ var constants=
 
     TELEPORT_TO_BOSS:6,
 
-    RETURN_TO_BASE_TEXTURE:7
+    RETURN_TO_BASE_TEXTURE:7,
+
+
+    PLACEREDSTONEBLOCK:8
 
 }
 
 var Fighting=false;
 var CurrentPercentiles=[1]
+
 /**
  * @param {NpcEvent.TimerEvent} e
  */
@@ -125,6 +133,8 @@ function timer(e)
                 changeskin(e.npc, ccapacvariables.condortextureurl)
                 e.npc.getDisplay().setBossColor(0)
 
+                activateredstone(e.npc)
+
 
 
                 if(ccapacvariables.diagcondorwindup!="")
@@ -135,6 +145,8 @@ function timer(e)
                 e.npc.getAi().setMovingType(0)
                 e.npc.getAi().setRetaliateType(3)
                 e.npc.getDisplay().setHasLivingAnimation(false)
+                e.npc.getAi().setWalkingSpeed(0)
+
 
                 e.npc.getTimers().stop(constants.CONDORWINDUP)
                 e.npc.getTimers().start(constants.CONDORWINDUP,ccapacvariables.windupcondordelay*20,false)
@@ -176,6 +188,8 @@ function timer(e)
         e.npc.getAi().setMovingType(1)
         e.npc.getAi().setRetaliateType(0)
         e.npc.getDisplay().setHasLivingAnimation(true)
+        e.npc.getAi().setWalkingSpeed(8)
+
 
         e.npc.getTimers().start(constants.CONDOR_HPTO1,ccapacvariables.condormajorcd*20,false)
 
@@ -196,6 +210,8 @@ function timer(e)
             restarttimers(e, constants.HUMMINGBIRD_DEALDMG)
             changeskin(e.npc, ccapacvariables.hummingbirdtextureurl)
             e.npc.getDisplay().setBossColor(2)
+            activateredstone(e.npc)
+
 
 
             if(ccapacvariables.diaghummingbird!="")
@@ -238,6 +254,8 @@ function timer(e)
             restarttimers(e, constants.WHALE_SLOW)
             changeskin(e.npc, ccapacvariables.whaletextureurl)
             e.npc.getDisplay().setBossColor(5)
+            activateredstone(e.npc)
+
 
             if(ccapacvariables.diagwhale!="")
             {
@@ -271,7 +289,7 @@ function timer(e)
             }
 
 
-            var hit=e.npc.getWorld().getNearbyEntities(e.npc.getPos(), ccapacvariables.whaleradius, 1)
+            var hit=e.npc.getWorld().getNearbyEntities(e.npc.getPos(), ccapacvariables.teleportrange, 1)
         
             if (hit.length!=0){
                 for (var i = 0; i < hit.length; i++) {
@@ -293,6 +311,12 @@ function timer(e)
     {
         e.npc.getDisplay().setSkinUrl(ccapacvariables.basetextureurl)
         e.npc.getDisplay().setBossColor(1)
+    }
+    else if(e.id==constants.PLACEREDSTONEBLOCK)
+    {
+        var command='setblock '+ccapacvariables.coords[0].toString()+' '+ccapacvariables.coords[1].toString()+' '+ccapacvariables.coords[2].toString()+' '+"minecraft:air"
+        e.API.executeCommand(e.npc.getWorld(),command)
+        
     }
 
 }
@@ -345,6 +369,19 @@ function changeskin(e,url)
     e.getTimers().start(constants.RETURN_TO_BASE_TEXTURE,ccapacvariables.alttexturetime*20,false)
 }
 
+/**
+ * @param {ICustomNpc} e
+ */
+function activateredstone(e){
+    var command='setblock '+ccapacvariables.coords[0].toString()+' '+ccapacvariables.coords[1].toString()+' '+ccapacvariables.coords[2].toString()+' '+"minecraft:redstone_block"
+    e.executeCommand(command)
+    if (e.getTimers().has(constants.PLACEREDSTONEBLOCK)) {
+        e.getTimers().stop(constants.PLACEREDSTONEBLOCK);
+    }
+    e.getTimers().start(constants.PLACEREDSTONEBLOCK,1*20,false)
+    
+}
+
 
 /**
  * @param {ICustomNpc} e
@@ -377,6 +414,13 @@ function stopalltimers(e)
         e.getDisplay().setBossColor(1)
 
     }
+
+    if (e.getTimers().has(constants.PLACEREDSTONEBLOCK)) {
+        e.getTimers().stop(constants.PLACEREDSTONEBLOCK);
+        var command='setblock '+ccapacvariables.coords[0].toString()+' '+ccapacvariables.coords[1].toString()+' '+ccapacvariables.coords[2].toString()+' '+"minecraft:air"
+        e.executeCommand(command)
+
+    }
 }
 
 /**
@@ -398,7 +442,6 @@ function damaged(e)
 
         stopalltimers(e.npc)
 
-
         e.npc.getTimers().start(constants.CONDOR_HPTO1,ccapacvariables.condorcd*20,true)
         e.npc.getTimers().start(constants.HUMMINGBIRD_DEALDMG,ccapacvariables.hummingbirdcd*20,true)
         e.npc.getTimers().start(constants.WHALE_SLOW,ccapacvariables.whalecd*20,true)
@@ -416,6 +459,8 @@ function damaged(e)
 
         changeskin(e.npc, ccapacvariables.monkeytextureurl)
         e.npc.getDisplay().setBossColor(4)
+        activateredstone(e.npc)
+        
 
 
 
@@ -455,7 +500,11 @@ function init(e)
     e.npc.getDisplay().setSkinUrl(ccapacvariables.basetextureurl)
     e.npc.getDisplay().setBossColor(1)
 
+    e.npc.getAi().setMovingType(0)
+    e.npc.getAi().setRetaliateType(0)
+    e.npc.getAi().setWalkingSpeed(8)
 
+    e.npc.getDisplay().setHasLivingAnimation(true)
 
 }
 
@@ -474,4 +523,13 @@ function died(e)
             e.npc.say(ccapacvariables.deathdiag)
         }
 
+    e.npc.getDisplay().setSkinUrl(ccapacvariables.basetextureurl)
+    e.npc.getDisplay().setBossColor(1)
+    e.npc.getAi().setMovingType(0)
+    e.npc.getAi().setRetaliateType(0)
+    e.npc.getAi().setWalkingSpeed(8)
+
+    e.npc.getDisplay().setHasLivingAnimation(true)
+
+    
 }

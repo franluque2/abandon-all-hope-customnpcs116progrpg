@@ -11,7 +11,7 @@ var isblockactive=true;
 var electricInterval = 1;
 
 //health restored each zap
-var healthrestored=50
+var healthrestored=15
 
 var RGBCOLORING = "0.4274 0.76078 0.87058"
 
@@ -24,10 +24,10 @@ var EXPLOSION_RADIUS=4
 
 //damage of explosion
 
-var EXPLOSIONDAMAGE=20
+var EXPLOSIONDAMAGE=100
 
 //time (in seconds) block is off when punched
-var timeoff=20
+var timeoff=30
 
 /**
  * @param {BlockEvent.TimerEvent} event
@@ -39,7 +39,9 @@ function timer(event)
     {
 
         var closeentities=event.block.getWorld().getNearbyEntities(event.block.getPos(), RADIUS, 2)
-
+var closeentitiesplayer=event.block.getWorld().getNearbyEntities(event.    block.getPos(), RADIUS, 1)
+        if (closeentitiesplayer.length!=0)
+        {
         for (var i = 0; i < closeentities.length; i++) {
             if (closeentities[i].getName() == INVNAME){
                 drawLine(event.block.getWorld(),event.block.getPos(),closeentities[i].getPos(),10,"dust")
@@ -63,6 +65,7 @@ function timer(event)
     
                     //event.block.getWorld().spawnParticle("cloud", closeentities[i].getX() + x, closeentities[i].getY() + y + 1, closeentities[i].getZ() + z, 0,0,0,0.1, 1);
                     //}
+                    }
       }
     }
 }
@@ -105,10 +108,10 @@ function drawLine(world, pos1, pos2, resolution, particle)
 }
 
 /**
- * @param {BlockEvent.ClickedEvent} e
+ * @param {BlockEvent.InteractEvent} e
  */
 
-function clicked(e)
+function interact(e)
 {
     if (isblockactive)
     {
