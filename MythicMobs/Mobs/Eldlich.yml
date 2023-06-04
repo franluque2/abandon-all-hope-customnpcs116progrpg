@@ -37,7 +37,7 @@ eldlich_the_golden_lord:
 
     #anticheese
     - setvariable{var=caster.anticheesedialogue;value="Come Here!";type=STRING}
-    - skill:anticheese @PlayersInRadius{r=60} ~onTimer:200 =99%
+    - skill:anticheese @PlayersInRadius{r=60} ~onTimer:200 <99%
     #spawn adds
     - summon{type=conquistador_of_the_golden_land;amount=1;radius=5} @self ~onSpawn
     - summon{type=huaquero_of_the_golden_land;amount=1;radius=5} @self ~onSpawn

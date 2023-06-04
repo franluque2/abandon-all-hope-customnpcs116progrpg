@@ -34,9 +34,9 @@ earthbound_immortal_ccapac_apu:
     - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="You've yet to even reach the eye of the storm";chatprefix=<caster.name>&f<&co>;duration=200} @self ~onDamaged =99%
     #anticheese
     - setvariable{var=caster.anticheesedialogue;value="Thought you were safe, casters?";type=STRING}
-    - skill:anticheese @PlayersInRadius{r=60} ~onTimer:200 =99%
+    - skill:anticheese @PlayersInRadius{r=60} ~onTimer:200 <99%
     #glyphs
-    - randomskill{skills=ccapac_condor_drop_to_one,ccapac_hummingbird_aoe_dmg,ccapac_whale_slow} @self ~onTimer:120 =99%
+    - randomskill{skills=ccapac_condor_drop_to_one,ccapac_hummingbird_aoe_dmg,ccapac_whale_slow} @self ~onTimer:120 <99%
     #monkey negates
     - skill:ccapac_monkey_negate @self ~onDamaged =90%
     - skill:ccapac_monkey_negate @self ~onDamaged =80%
