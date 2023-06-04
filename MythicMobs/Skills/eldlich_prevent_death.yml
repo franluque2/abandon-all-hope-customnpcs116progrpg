@@ -19,7 +19,7 @@ eldlich_prevent_death_base:
       - CancelEvent
     ]
     case over=[
-      - remove{delay=30} @MobsInRadius{r=30;t=guardian_of_the_golden_land,huaquero_of_the_golden_land,conquistador_of_the_golden_land}
+      #- remove{delay=30} @MobsInRadius{r=30;t=guardian_of_the_golden_land,huaquero_of_the_golden_land,conquistador_of_the_golden_land}
     ]
     case DEFAULT=[    
     ]}
