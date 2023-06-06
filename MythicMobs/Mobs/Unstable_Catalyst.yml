@@ -1,0 +1,26 @@
+unstable_catalyst:
+    Type: slime
+    Display: Unstable Catalyst
+    Disguise: FALLING_BLOCK MAGMA_BLOCK
+    Health: 100
+    Damage: 0
+    Faction: boss_iron_core
+    Options:
+        MovementSpeed: 0.3
+        Despawn: true
+        AlwaysShowName: false
+        KnockbackResistance: 1
+        PreventOtherDrops: true
+        PreventRandomEquipment: true
+        PreventMobKillDrops: true
+        PreventRenaming: true
+        PreventSunburn: true
+        ReviveHealth: -1
+        Invincible: false
+        Silent: true
+    AITargetSelectors:
+        - clear
+        - players
+    Skills:
+        - damage{amount=50;element=FIRE} @PIR{8} ~onDeath
+        - effect:explosion @self ~onDeath

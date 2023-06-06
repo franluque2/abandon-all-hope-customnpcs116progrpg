@@ -1,0 +1,22 @@
+immunity_catalyst:
+    Type: slime
+    Display: Immunity Catalyst
+    Disguise: FALLING_BLOCK IRON_BLOCK
+    Health: 100
+    Damage: 0
+    Faction: boss_iron_core
+    Options:
+        MovementSpeed: 0
+        Despawn: true
+        AlwaysShowName: false
+        KnockbackResistance: 1
+        PreventOtherDrops: true
+        PreventRandomEquipment: true
+        PreventMobKillDrops: true
+        PreventRenaming: true
+        PreventSunburn: true
+        ReviveHealth: -1
+        Invincible: false
+        Silent: true
+    AITargetSelectors:
+        - clear

@@ -1,0 +1,26 @@
+charged_catalyst:
+    Type: slime
+    Display: Charged Catalyst
+    Disguise: FALLING_BLOCK REDSTONE_BLOCK
+    Health: 100
+    Damage: 0
+    Faction: boss_iron_core
+    Options:
+        MovementSpeed: 0.3
+        Despawn: true
+        AlwaysShowName: false
+        KnockbackResistance: 1
+        PreventOtherDrops: true
+        PreventRandomEquipment: true
+        PreventMobKillDrops: true
+        PreventRenaming: true
+        PreventSunburn: true
+        ReviveHealth: -1
+        Invincible: false
+        Silent: true
+    AITargetSelectors:
+        - clear
+        - players
+    Skills:
+        - damage{amount=10;element=ELECTRIC} @PIR{8} ~onTimer{80}
+        - effect:lightning{l=true,r=30} @self ~onTimer{80}

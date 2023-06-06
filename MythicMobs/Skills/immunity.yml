@@ -1,0 +1,6 @@
+immunity:
+  Skills:
+    - effect:particlesphere{particle=cloud;amount=200;radius=2} @self
+    - effect:particleline{particle=cloud;amount=1;fromOrigin=true}
+    - effect:particlesphere{particle=cloud;amount=200;radius=2}
+    - cancelevent
