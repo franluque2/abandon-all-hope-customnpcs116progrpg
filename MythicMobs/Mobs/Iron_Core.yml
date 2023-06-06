@@ -1,0 +1,51 @@
+iron_core:
+    Type: iron_golem
+    Display: Iron Core
+    Health: 200
+    Damage: 15
+    Disguise: ApuBlie
+    BossBar:
+        Enabled: true
+        Title: Iron Core
+        Range: 20
+        Color: BLUE
+        Style: SEGMENTED_6
+        CreateFog: false
+        DarkenSky: false
+        PlayMusic: false
+    Faction: boss_earthbound
+    Modules:
+        ThreatTable: true
+    Drops:
+    - leather_chestplate{name="Blue Leather";lore="&8An enchanted vest made of blue leather";color=BLUE} 1 1
+    Options:
+        MovementSpeed: 0.3
+        Despawn: PERSISTENT
+        AlwaysShowName: true
+        KnockbackResistance: 0.5
+        PreventOtherDrops: true
+        PreventRandomEquipment: true
+        PreventMobKillDrops: true
+        PreventRenaming: true
+        PreventSunburn: true
+        ReviveHealth: -1
+        Silent: true
+    Skills:
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="You've yet to even reach the eye of the storm";chatprefix=<caster.name>&f<&co>;duration=200} @self ~onDamaged =99%
+    #anticheese
+    - setvariable{var=caster.anticheesedialogue;value="Thought you were safe, casters?";type=STRING}
+    - skill:anticheese @PlayersInRadius{r=60} ~onTimer:200 <99%
+    #glyphs
+    - randomskill{skills=ccapac_condor_drop_to_one,ccapac_hummingbird_aoe_dmg,ccapac_whale_slow} @self ~onTimer:120 <99%
+    #monkey negates
+    - skill:ccapac_monkey_negate @self ~onDamaged =90%
+    - skill:ccapac_monkey_negate @self ~onDamaged =80%
+    - skill:ccapac_monkey_negate @self ~onDamaged =70%
+    - skill:ccapac_monkey_negate @self ~onDamaged =60%
+    - skill:ccapac_monkey_negate @self ~onDamaged =50%
+    - skill:ccapac_monkey_negate @self ~onDamaged =40%
+    - skill:ccapac_monkey_negate @self ~onDamaged =30%
+    - skill:ccapac_monkey_negate @self ~onDamaged =20%
+    - skill:ccapac_monkey_negate @self ~onDamaged =10%
+    #death dialogue
+    - speak{offset=0.6f;radius=30;maxlinelength=22;lineprefix="&5";message="You've done.... nothing.....";chatprefix=<caster.name>&f<&co>;duration=200} @self ~onDeath
